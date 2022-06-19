@@ -7,7 +7,7 @@
 
 # Site settings
 title: uncefact
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/website" # the subpath of your site, e.g. /blog
 
 markdown: kramdown
 kramwdown:

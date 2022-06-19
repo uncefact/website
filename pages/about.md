@@ -3,7 +3,7 @@ title: About
 menu:
   name: About
   order: 2
-permalink: /about/
+permalink: about/
 ---
 # About
 

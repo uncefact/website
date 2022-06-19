@@ -6,7 +6,7 @@
             {% if page.url == item.url %}
                 <span class="menu-item active">{{ item.menu.name }}</span>
             {% else %}
-                <a class="menu-item" href="{{ item.url }}">{{ item.menu.name }}</a>
+                <a class="menu-item" href="{{ item.url | absolute_url }}">{{ item.menu.name }}</a>
             {% endif %}
         </li>
     {% endfor %}

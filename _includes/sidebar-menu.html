@@ -1,0 +1,13 @@
+{%- assign menu_items = site.pages | where_exp:"page", "page.menu.name" | sort: "menu.order" -%}
+{% assign current = page.url  %}
+<ul class="sidebar-menu">
+    {% for item in menu_items %}
+        <li>
+            {% if page.url == item.url %}
+                <span class="menu-item active">{{ item.menu.name }}</span>
+            {% else %}
+                <a class="menu-item" href="{{ item.url }}">{{ item.menu.name }}</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

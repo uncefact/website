@@ -1,0 +1,58 @@
+.sidebar-search {
+  margin: 0 0 15px 0;
+}
+
+.search {
+  .page-title {
+    font-weight: 600;
+  }
+
+  &-form {
+    display: flex;
+
+    &__input {
+      background: #F7F6F4;
+      border: 1px solid #E6E5E3;
+      padding: 5px 10px;
+      height: 34px;
+    }
+
+    &__submit {
+      background: $app-blue;
+      border: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 43px;
+      height: 34px;
+
+      svg {
+        fill: #fff;
+      }
+    }
+  }
+
+  &-results {
+    &__amount {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 20px 0;
+      padding: 0 0 5px 0;
+      border-bottom: 1px solid $grey-color-light;
+    }
+
+    &__title {
+      font-size: 16px;
+
+      &-link {
+        color: $text-color;
+      }
+    }
+
+    &__row {
+      margin: 0 0 10px 0;
+      padding: 0 0 10px 0;
+      border-bottom: 1px solid $grey-color-light;
+    }
+  }
+}

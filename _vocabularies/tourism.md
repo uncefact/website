@@ -1,18 +1,18 @@
 ---
-title: Transport
+title: Tourism
 menu:
-  name: Transport
+  name: Tourism
   order: 8
 ---
-# Vocabulary - Transport Domain
-Standard vocabularies for the transport and logistics business domain
+# Vocabulary - Tourism Domain
+Standard vocabularies for the travel and tourism business domain
 
 ## Links
 
-[GitHub](https://github.com/uncefact/vocab-transport)
+[GitHub](https://github.com/uncefact/vocab-tourism)
 
-[Issues](https://github.com/uncefact/vocab-transport/issues)
+[Issues](https://github.com/uncefact/vocab-tourism/issues)
 
-[Models](https://jargon.sh/user/unece/vocab-transport)
+[Models](https://jargon.sh/user/unece/vocab-tourism)
 
-[Chat](https://uncefact.slack.com/archives/C03KK4XTJA3) / [Join](https://join.slack.com/t/uncefact/shared_invite/zt-1b4qajh9d-dMCc7brWqHDToDrh195EZA)
+[Chat](https://uncefact.slack.com/archives/C03KWQUPM1T) / [Join](https://join.slack.com/t/uncefact/shared_invite/zt-1b4qajh9d-dMCc7brWqHDToDrh195EZA)

@@ -1,0 +1,48 @@
+.footer {
+  color: #fff;
+  background: $app-blue;
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 13px;
+
+  .footer-logo {
+    color: #fff;
+    font-size: 20px;
+    text-decoration: none;
+    font-weight: 700;
+
+    img {
+      max-height: 60px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  .footer-menu {
+    list-style: none;
+    padding: 0;
+    margin: 17px 0 10px 0;
+
+    li {
+      display: inline;
+      padding: 0 20px;
+
+      @media screen and (max-width: 768px) {
+        display: block;
+        padding: 10px 0;
+      }
+
+    }
+
+    a {
+      color: #fff;
+      font-size: 17px;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+  }
+}

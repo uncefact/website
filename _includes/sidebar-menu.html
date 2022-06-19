@@ -1,12 +1,62 @@
 {%- assign menu_items = site.pages | where_exp:"page", "page.menu.name" | sort: "menu.order" -%}
-{% assign current = page.url  %}
+{%- assign vocabularies = site.vocabularies | where_exp:"post", "post.menu" | sort: "menu.order" -%}
+{%- assign projects = site.projects | where_exp:"post", "post.menu" | sort: "menu.order" -%}
+{%- assign specs = site.specs | where_exp:"post", "post.menu" | sort: "menu.order" -%}
+{% assign current = page.url | downcase | split: '/' %}
 <ul class="sidebar-menu">
     {% for item in menu_items %}
         <li>
             {% if page.url == item.url %}
-                <span class="menu-item active">{{ item.menu.name }}</span>
+            <span class="menu-item active">{{ item.menu.name }}</span>
             {% else %}
-                <a class="menu-item" href="{{ item.url | absolute_url }}">{{ item.menu.name }}</a>
+            <a class="menu-item" href="{{ item.url | absolute_url }}">{{ item.menu.name }}</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+    <li class="menu-title"><a{% if current[1] == 'vocabularies' or current[2] == 'vocabularies' %} class="active"{% endif %} href="{{ 'vocabularies' | absolute_url }}">Vocabularies</a></li>
+    {% for item in vocabularies %}
+        <li>
+            {% if item.menu.name %}
+                {% assign menuName = item.menu.name  %}
+            {% else %}
+                {% assign menuName = item.title  %}
+            {% endif %}
+            {% if page.url == item.url %}
+                <span class="menu-item active">{{ menuName }}</span>
+            {% else %}
+                <a class="menu-item" href="{{ item.url | absolute_url }}">{{ menuName }}</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+
+    <li class="menu-title"><a{% if current[1] == 'projects' or current[2] == 'projects' %} class="active"{% endif %} href="{{ 'projects' | absolute_url }}">Projects</a></li>
+    {% for item in projects %}
+        <li>
+            {% if item.menu.name %}
+                {% assign menuName = item.menu.name  %}
+            {% else %}
+                {% assign menuName = item.title  %}
+            {% endif %}
+            {% if page.url == item.url %}
+                <span class="menu-item active">{{ menuName }}</span>
+            {% else %}
+                <a class="menu-item" href="{{ item.url | absolute_url }}">{{ menuName }}</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+
+    <li class="menu-title"><a{% if current[1] == 'specs' or current[2] == 'specs' %} class="active"{% endif %} href="{{ 'specs' | absolute_url }}">Tech Specs</a></li>
+    {% for item in specs %}
+        <li>
+            {% if item.menu.name %}
+                {% assign menuName = item.menu.name  %}
+            {% else %}
+                {% assign menuName = item.title  %}
+            {% endif %}
+            {% if page.url == item.url %}
+                <span class="menu-item active">{{ menuName }}</span>
+            {% else %}
+                <a class="menu-item" href="{{ item.url | absolute_url }}">{{ menuName }}</a>
             {% endif %}
         </li>
     {% endfor %}

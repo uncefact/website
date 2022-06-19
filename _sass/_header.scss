@@ -74,6 +74,7 @@
 
     .header-tagline {
       color: #f2f2f2;
+      max-width: 650px;
 
       a, p {
         color: #f2f2f2;
@@ -186,6 +187,25 @@
         li {
           display: block;
           float: none;
+
+          &.menu-title {
+            padding: 0;
+            color: #fff;
+            font-weight: 600;
+            font-size: 16px;
+
+            a {
+              color: #fff;
+              display: block;
+              padding: 6px 19px 8px 15px;
+              text-decoration: none;
+
+              &.active {
+                font-weight: 600;
+                background: #ee4901;
+              }
+            }
+          }
         }
 
         .menu-item {

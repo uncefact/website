@@ -1,8 +1,5 @@
 ---
 title: About
-menu:
-  name: About
-  order: 2
 permalink: about/
 ---
 # About

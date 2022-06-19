@@ -15,6 +15,18 @@ kramwdown:
 
 permalink: /website/:title
 
+collections:
+  vocabularies:
+    output: true
+    permalink: /vocabulary/:name/
+  specs:
+    output: true
+    permalink: /specs/:name/
+  projects:
+    output: true
+    permalink: /project/:name/
+
+
 defaults:
   -
     scope:

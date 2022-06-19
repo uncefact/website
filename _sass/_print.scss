@@ -47,7 +47,7 @@
     content:" (" attr(href) ") ";
   }
   a:not([href*="http"]):after{
-    content:" (http://edi3.org" attr(href) ") ";
+    content:" (https://uncefact.github.io/website/" attr(href) ") ";
   }
   abbr[title]:after {
     content: " (" attr(title) ")";

@@ -13,4 +13,4 @@ Standards organisations such as [UN/CEFACT](https://www.unece.org/cefact/) and o
 
 The rise of web platforms that exchange data via RESTful JSON APIs presents a new paradigm for B2B data exchange. But developers of web platforms rarely look to EDI standards to guide the design of their APIs. The purpose of this site is make semantic standards that embed decades of business domain knowledge accessible to web developers. The site also support interoperable implementations through open tooling, implememntations, and test harnesses.
 
-If you are a provider of platforms or services to the international supply chain and are implementing (or plan to implement) APIs then you will be interested in the specifications provided by this site. Check out the [business case](https://edi3.org/business-case/) page to understand the value of edi3 specifications.
+If you are a provider of platforms or services to the international supply chain and are implementing (or plan to implement) APIs then you will be interested in the specifications provided by this site. Check out the [business case](#) page to understand the value of edi3 specifications.

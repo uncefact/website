@@ -45,7 +45,8 @@ img {
 .main-content {
   display: flex;
   flex: 1;
-  width: 1200px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
 

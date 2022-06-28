@@ -1,0 +1,358 @@
+---
+layout: compress
+---
+<!DOCTYPE html>
+<html lang="en">
+{% include head.html %}
+{% include header.html header_name=page.header_name header_description=page.header_description %}
+<div class="main-wrapper">
+    <div class="main-content">
+        <div class="page-sidebar vocabulary-sidebar">
+            <div class="sidebar-search">
+                {% include search-form.html %}
+            </div>
+            {% include vocabulary-menu.html %}
+        </div>
+        <div class="page-content vocabulary-content">
+            {% assign vocab = site.data.uncefact %}
+            {% assign graphItems = vocab["@graph"] %}
+
+            {% for graphItem in graphItems %}
+                {% if page.type == "code-list" %}
+                    {% assign anchorId = graphItem["@id"] | replace_first: page.jsonid, "" | replace_first: ":", "" %}
+                {% elsif page.type == "uncl" %}
+                    {% assign anchorId = graphItem["@id"] | replace_first: page.jsonid, "" | replace_first: ":", "" %}
+                {% elsif page.type == "unlocode" %}
+                    {% assign anchorId = graphItem["@id"] | replace_first: page.jsonid, "" | replace_first: ":", "" %}
+                {% else %}
+                    {% assign anchorId = graphItem["@id"] | replace_first: "uncefact:", ""  %}
+                {% endif %}
+                {% assign currentClass = graphItem %}
+                {% assign cefactElementMetadata = graphItem["uncefact:cefactElementMetadata"] %}
+
+                <div class="vocabulary-item-row" id="{{ anchorId | downcase }}-row">
+                    <h2 id="{{ anchorId }}">{{ anchorId }}</h2>
+                    <ul class="vocabulary-item-data">
+                        <li><strong>@id:</strong> {{ graphItem["@id"] }}
+                        <li><strong>@type:</strong> {{ graphItem["@type"] }}</li>
+                        {% if graphItem["rdfs:comment"] %}
+                            <li><strong>Comment:</strong> {{ graphItem["rdfs:comment"] }}</li>
+                        {% endif %}
+                        {% if graphItem["schema:rangeIncludes"]["@id"] %}
+                            <li><strong>Range:</strong>
+                                {% assign rangePrefix = graphItem["schema:rangeIncludes"]["@id"] | slice: 0, 5 %}
+                                {% if rangePrefix == "uncefact" %}
+                                    <a href="#{{ graphItem["schema:rangeIncludes"]["@id"] | replace_first: "uncefact:", "" }}">{{ graphItem["schema:rangeIncludes"]["@id"] }}</a>
+                                {% else %}
+                                    {{ graphItem["schema:rangeIncludes"]["@id"] }}
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                        {% if graphItem["schema:domainIncludes"] %}
+                            <li>
+                                {% assign domains = currentClass["schema:domainIncludes"] %}
+                                <strong>Domains:</strong>
+                                {% if domains["@id"] %}
+                                    <a href="#{{ domains["@id"] | replace_first: "uncefact:", "" }}">{{ domains["@id"] }}</a>
+                                {% else %}
+                                    <br/>{% for domain in domains %}<a href="#{{ domain["@id"] | replace_first: "uncefact:", "" }}">{{ domain["@id"] }}</a>{% if forloop.last == false %}, {% endif %}{% endfor %}
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                        {% if page.type == "code-list" %}
+                            {% if graphItem["rdfs:comment"] != "" %}
+                            <li><strong>rdfs:comment:</strong> {{ graphItem["rdfs:comment"] }}</li>
+                            {% endif %}
+                            {% if graphItem["rdf:value"] %}
+                            <li><strong>rdf:value:</strong> {{ graphItem["rdf:value"] }}</li>
+                            {% endif %}
+                            {% for option in page.options  %}
+                                {% if graphItem[option] %}
+                                <li><strong>{{option}}:</strong> {{ graphItem[option] }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if page.type == "unlocode" %}
+                            {% if graphItem["rdfs:comment"] != "" %}
+                            <li><strong>rdfs:comment:</strong> {{ graphItem["rdfs:comment"] }}</li>
+                            {% endif %}
+                            {% if graphItem["rdf:value"] %}
+                            <li><strong>rdf:value:</strong> {{ graphItem["rdf:value"] }}</li>
+                            {% endif %}
+                            {% for option in page.options  %}
+                                {% if graphItem[option] %}
+                                <li><strong>{{option}}:</strong> {{ graphItem[option] }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if page.type == "uncl" %}
+                            {% if graphItem["rdfs:comment"] != "" %}
+                            <li><strong>rdfs:comment:</strong> {{ graphItem["rdfs:comment"] }}</li>
+                            {% endif %}
+                            {% if graphItem["rdf:value"] %}
+                            <li><strong>rdf:value:</strong> {{ graphItem["rdf:value"] }}</li>
+                            {% endif %}
+                            {% for option in page.options  %}
+                                {% if graphItem[option] %}
+                                <li><strong>{{option}}:</strong> {{ graphItem[option] }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+
+                    {% assign item_properties = "" %}
+                    {% assign item_properties = "" | split: ',' %}
+                    {% assign item_relationships = "" %}
+                    {% assign item_relationships = "" | split: ',' %}
+                    {% assign item_ranges = "" %}
+                    {% assign item_ranges = "" | split: ',' %}
+                    {% for graphItem in graphItems %}
+                        {% if graphItem["@type"] == "rdf:Property" %}
+                            {% assign range = graphItem["schema:rangeIncludes"]["@id"] | slice: 0, 4 %}
+                            {% if range == "xsd:" or graphItem["schema:rangeIncludes"]["@id"] contains "uncefact:UNECECL" %}
+                                {% if graphItem["schema:domainIncludes"]["@id"] %}
+                                    {% if graphItem["schema:domainIncludes"]["@id"] contains currentClass["@id"] %}
+                                        {% assign item_properties = item_properties | push: graphItem %}
+                                    {% endif %}
+                                {% else %}
+                                    {% for domain in graphItem["schema:domainIncludes"] %}
+                                        {% if domain["@id"] contains currentClass["@id"] %}
+                                            {% assign item_properties = item_properties | push: graphItem %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% else %}
+                                {% if graphItem["schema:domainIncludes"]["@id"] %}
+                                    {% if graphItem["schema:domainIncludes"]["@id"] contains currentClass["@id"] %}
+                                        {% assign item_relationships = item_relationships | push: graphItem %}
+                                    {% endif %}
+                                {% else %}
+                                    {% for domain in graphItem["schema:domainIncludes"] %}
+                                        {% if domain["@id"] contains currentClass["@id"] %}
+                                            {% assign item_relationships = item_relationships | push: graphItem %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+                            {% if currentClass["@id"] contains graphItem["schema:rangeIncludes"]["@id"] %}
+                                {% assign item_ranges = item_ranges | push: graphItem %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if item_properties.first %}
+                        <div class="vocabulary-item-card">
+                            <h3 class="collapsible" id="{{ graphItem["@id"] | replace_first: "uncefact:", "" }}-properies">Properties</h3>
+                            <div class="collapsible-content" style="display: none;">
+                                {% if graphItem["@type"] == "rdfs:Class" %}
+                                    {% if cefactElementMetadata %}
+                                        <div class="vocabulary-item-filter">
+                                            <strong>Show properties for:</strong>
+                                            <select name="{{anchorId}}_context" id='{{ anchorId | downcase | append: "_filter" }}'>
+                                                <option value="all">All contexts</option>
+                                                {% for cefactElementMetadata in cefactElementMetadata %}
+                                                    <option value='{{cefactElementMetadata["@id"] | slugify }}'>{{cefactElementMetadata["@id"] | replace_first: "cefact:", ""}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <script>
+                                            const {{ anchorId | downcase | append: "_row" }} = document.getElementById('{{ anchorId | lowercase | prepend: "#" | append: "-row" }}');
+                                            const {{ anchorId | downcase | append: "_filter" }} = document.querySelector('{{ anchorId | downcase | prepend: "#" | append: "_filter" }}');
+                                            {{ anchorId | downcase | append: "_filter" }}.addEventListener('change', function (event) {
+                                                let allProperties = document.querySelectorAll('{{ anchorId | downcase | prepend: "#" | append: "_table" }} [data-context]');
+                                                let activeProperties = document.querySelectorAll('{{ anchorId | downcase | prepend: "#" | append: "_table" }} [data-context="' + event.target.value +'"]');
+
+                                                for (i = 0; i < allProperties.length; ++i) {
+                                                    allProperties[i].style.display = "none";
+                                                };
+
+                                                for (i = 0; i < activeProperties.length; ++i) {
+                                                    activeProperties[i].style.display = "";
+                                                };
+                                            });
+                                        </script>
+                                    {% endif %}
+                                {% endif %}
+                                <table id='{{ anchorId | downcase | append: "_table" }}' class="vocabulary-item-properties">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </thead>
+                                    {% for property in item_properties %}
+                                    <tbody>
+                                        <tr data-context="all">
+                                            <th><a href="#{{ property["@id"] | replace_first: "uncefact:", "" }}">{{property["@id"] | replace_first: "uncefact:", ""}}</a></th>
+                                            <td>{{property["schema:rangeIncludes"]["@id"]}}</td>
+                                        </tr>
+                                        {% for propertyCefactElement in property["uncefact:cefactElementMetadata"] %}
+                                        <tr data-context="{{ propertyCefactElement["uncefact:cefactBieDomainClass"] | slugify }}" style="display: none;">
+                                            <th><a href="#{{ property["@id"] | replace_first: "uncefact:", "" }}">{{property["@id"] | replace_first: "uncefact:", ""}}</a></th>
+                                            <td>{{property["schema:rangeIncludes"]["@id"]}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if item_relationships.first %}
+                        <div class="vocabulary-item-card">
+                            <h3 class="collapsible" id="{{ graphItem["@id"] | replace_first: "uncefact:", "" }}-relationships">Relationships</h3>
+                            <div class="collapsible-content" style="display: none;">
+                                {% if graphItem["@type"] == "rdfs:Class" %}
+                                    {% if cefactElementMetadata %}
+                                        <div class="vocabulary-item-filter">
+                                            <strong>Show relationships for:</strong>
+                                            <select name="{{anchorId}}_context" id='{{ anchorId | downcase | append: "_relationship_filter" }}'>
+                                                <option value="all">All contexts</option>
+                                                {% for cefactElementMetadata in cefactElementMetadata %}
+                                                    <option value='{{cefactElementMetadata["@id"] | slugify }}'>{{cefactElementMetadata["@id"] | replace_first: "cefact:", ""}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <script>
+                                            const {{ anchorId | downcase | append: "_relationship_filter" }} = document.querySelector('{{ anchorId | downcase | prepend: "#" | append: "_relationship_filter" }}');
+                                            {{ anchorId | downcase | append: "_relationship_filter" }}.addEventListener('change', function (event) {
+                                                let allProperties = document.querySelectorAll('{{ anchorId | downcase | prepend: "#" | append: "_relationship_table" }} [data-context]');
+                                                let activeProperties = document.querySelectorAll('{{ anchorId | downcase | prepend: "#" | append: "_relationship_table" }} [data-context="' + event.target.value +'_rs"]');
+
+                                                for (i = 0; i < allProperties.length; ++i) {
+                                                    allProperties[i].style.display = "none";
+                                                };
+
+                                                for (i = 0; i < activeProperties.length; ++i) {
+                                                    activeProperties[i].style.display = "";
+                                                };
+                                            });
+                                        </script>
+                                    {% endif %}
+                                {% endif %}
+
+                                <table id='{{ anchorId | downcase | append: "_relationship_table" }}' class="vocabulary-item-properties">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </thead>
+                                    {% for relationship in item_relationships%}
+                                        <tbody>
+                                            <tr data-context="all_rs">
+                                                <th><a href="#{{ relationship["@id"] | replace_first: "uncefact:", "" }}">{{relationship["@id"] | replace_first: "uncefact:", ""}}</a></th>
+                                                <td><a href="#{{ relationship["schema:rangeIncludes"]["@id"] | replace_first: "uncefact:", "" }}">{{relationship["schema:rangeIncludes"]["@id"]}}</a></td>
+                                            </tr>
+                                            {% for relationshipCefactElement in relationship["uncefact:cefactElementMetadata"] %}
+                                            <tr data-context="{{ relationshipCefactElement["uncefact:cefactBieDomainClass"] | slugify | append: "_rs" }}" style="display: none;">
+                                                <th><a href="#{{ relationship["@id"] | replace_first: "uncefact:", "" }}">{{relationship["@id"] | replace_first: "uncefact:", ""}}</a></th>
+                                                <td><a href="#{{ relationship["schema:rangeIncludes"]["@id"] | replace_first: "uncefact:", "" }}">{{relationship["schema:rangeIncludes"]["@id"]}}</a></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                   {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if item_ranges.first %}
+                        <div class="vocabulary-item-card">
+                            <h3 class="collapsible" id="{{ graphItem["@id"] | replace_first: "uncefact:", "" }}-ranges">Referenced by</h3>
+                            <div class="collapsible-content" style="display: none;">
+                            {% for item_range in item_ranges %}
+                                <a href="#{{ item_range["@id"] | replace_first: "uncefact:", "" }}">{{ item_range["@id"] | replace_first: "uncefact:", "" }}</a>{% if forloop.last == false %}, {% endif %}
+                            {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if cefactElementMetadata %}
+                        <div class="vocabulary-item-card">
+                            <h3 class="collapsible" id="{{ graphItem["@id"] | replace_first: "uncefact:", "" }}-cefact-data">UN/CEFACT Element Data</h3>
+                            <div class="collapsible-content" style="display: none;">
+                            {% for cefactElementMetadata in cefactElementMetadata %}
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>@id</th>
+                                        <td>{{cefactElementMetadata["@id"]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>@type</th>
+                                        <td>{{cefactElementMetadata["@type"]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>uncefact:cefactUNId</th>
+                                        <td>{{cefactElementMetadata["uncefact:cefactUNId"]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>rdfs:comment</th>
+                                        <td><p>{{cefactElementMetadata["rdfs:comment"]}}</p></td>
+                                    </tr>
+                                    {% if cefactElementMetadata["uncefact:cefactBieDomainClass"] %}
+                                    <tr>
+                                        <th>uncefact:cefactBieDomainClass</th>
+                                        <td>{{cefactElementMetadata["uncefact:cefactBieDomainClass"]}}</td>
+                                    </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <th>uncefact:cefactBusinessProcess</th>
+                                        <td>{{cefactElementMetadata["uncefact:cefactBusinessProcess"]}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            {{ content }}
+        </div>
+    </div>
+</div>
+{% if site.platform == "uncefact" %}
+{% else %}
+    {% include footer.html %}
+{% endif %}
+
+<button type="button" onclick="scrollTopFunction();" id="scroll-to-top" style="display: none;"></button>
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    }
+
+    var scrollButton = document.getElementById("scroll-to-top");
+
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 250 || document.documentElement.scrollTop > 250) {
+            scrollButton.style.display = "block";
+        } else {
+            scrollButton.style.display = "none";
+        }
+    }
+
+    function scrollTopFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script>
+</body>
+</html>

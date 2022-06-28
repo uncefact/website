@@ -16,6 +16,9 @@ kramwdown:
 permalink: /website/:title
 
 collections:
+  vocabs:
+    output: true
+    permalink: /vocab/:name/
   vocabularies:
     output: true
     permalink: /vocabulary/:name/
@@ -33,8 +36,16 @@ defaults:
       path: ""
     values:
       layout: "default"
+  - scope:
+      path: ""
+      type: "vocabs"
+    values:
+      layout: "vocabulary"
 
+sass:
+  sourcemap: development
 
 exclude:
   - .idea
   - .git
+  - .sass-cache

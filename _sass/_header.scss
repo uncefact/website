@@ -52,7 +52,7 @@
   .header-content {
     background: $app-blue;
     text-align: center;
-    color: #F2F2F2;
+    color: $header-tagline-color;
     font-size: 18px;
     padding: 3rem 0;
 
@@ -73,11 +73,12 @@
     }
 
     .header-tagline {
-      color: #f2f2f2;
+      color: $header-tagline-color;
       max-width: 650px;
+      margin: 0 auto;
 
       a, p {
-        color: #f2f2f2;
+        color: $header-tagline-color;
       }
     }
   }
